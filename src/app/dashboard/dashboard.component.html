@@ -1,0 +1,15 @@
+<div class="dashboard-container">
+  <div class="sidebar">
+    <div class="logo">
+      <img src="/bs-logo.png" alt="Logo" class="logo-img">
+    </div> 
+    <button [class.active]="isActive('sprint')" (click)="setView('sprint')">Sprint</button>
+    <button *ngIf="showSprintItems()" [class.active]="isActive('team-members')" (click)="setView('team-members')">Team members</button>
+    <button *ngIf="showSprintItems()" [class.active]="isActive('sprint-items')" (click)="setView('sprint-items')">Sprint items</button>
+    <button *ngIf="showWorkItems()" [class.active]="isActive('work-items')" (click)="setView('work-items')">Work items</button>
+    <button (click)="logout()">Logout</button>
+  </div>
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

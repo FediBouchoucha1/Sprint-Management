@@ -1,0 +1,120 @@
+<div class="sprint-container">
+
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+  <h1>Sprint</h1>
+
+  <button class="kanban-button" (click)="openKanban()" [disabled]="!focusedRowKey">
+    Open Kanban
+  </button>
+
+  <dx-data-grid
+    id="gridContainer"
+    #grid
+    [dataSource]="sprintData"
+    keyExpr="id"
+    [showBorders]="true"
+    [focusedRowEnabled]="true"
+    [focusedRowKey]="focusedRowKey"
+    [editing]="{
+      mode: 'popup',
+      allowUpdating: true,
+      allowAdding: true,
+      allowDeleting: true,
+      useIcons: true
+    }"
+    [selection]="{ mode: 'single' }"
+    (onRowInserting)="onRowInserting($event)"
+    (onRowUpdating)="onRowUpdating($event)"
+    (onRowRemoving)="onRowRemoving($event)"
+    (onSelectionChanged)="onSelectionChanged($event)"
+    (onInitialized)="grid.instance.selectRowsByIndexes([0])"
+  >
+    <dxo-paging [enabled]="false"></dxo-paging>
+
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
+      <dxo-popup title="Edit Sprint" [showTitle]="true" [width]="700" [height]="300">
+
+        <dxi-toolbar-item
+          toolbar="bottom"
+          widget="dxButton"
+          location="after"
+          [options]="cancelButtonOptions"
+        ></dxi-toolbar-item>
+
+        <dxi-toolbar-item
+        toolbar="bottom"
+        widget="dxButton"
+        location="after"
+        [options]="successButtonOptions"
+      ></dxi-toolbar-item>
+
+      </dxo-popup>
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+          
+          <dxi-item dataField="name" caption="Name">
+            <dxi-validation-rule
+              type="required"
+              message="Name is required"
+            ></dxi-validation-rule>
+          </dxi-item>
+
+          <dxi-item dataField="number" caption="Number">
+              <dxi-validation-rule
+              type="required"
+              message="Number is required"
+            ></dxi-validation-rule>
+          </dxi-item>
+
+          <dxi-item dataField="startDate" caption="Start Date" dataType="date">
+              <dxi-validation-rule
+                type="required"
+                message="Start Date is required"
+              ></dxi-validation-rule>
+          </dxi-item>
+
+          <dxi-item dataField="endDate" caption="End Date" dataType="date">
+              <dxi-validation-rule
+              type="required"
+              message="End Date is required"
+            ></dxi-validation-rule>
+          </dxi-item>
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+
+    <dxi-column dataField="name" caption="Name"></dxi-column>
+    <dxi-column dataField="number" caption="Number"></dxi-column>
+    <dxi-column dataField="startDate" caption="Start Date" dataType="date"></dxi-column>
+    <dxi-column dataField="endDate" caption="End Date" dataType="date"></dxi-column>
+    
+
+    <dxi-column type="buttons" width="100">
+      <dxi-button name="edit" icon="edit" hint="Edit"></dxi-button>
+      <dxi-button name="delete" icon="trash" hint="Delete"></dxi-button>
+    </dxi-column>
+  </dx-data-grid>
+</div>
+
+<dx-popup
+  [(visible)]="kanbanVisible"
+  [width]="800"
+  [height]="600"
+  [showTitle]="true"
+  title="Kanban Board"
+  [dragEnabled]="true"
+  [hideOnOutsideClick]="true">
+  <app-kanban [sprintId]="focusedRowKey"></app-kanban>
+</dx-popup>
+
+<dx-toast
+  #toast
+  [message]="toastMessage"
+  [type]="toastType"
+  [displayTime]="1500" 
+  [visible]="isToastVisible"
+  (onHiding)="isToastVisible = false"
+></dx-toast>

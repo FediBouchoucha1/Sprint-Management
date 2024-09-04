@@ -1,0 +1,138 @@
+
+.team-members-container {
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  
+  .button-group {
+    margin-bottom: 40px;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .button-group button {
+    padding: 10px 20px;
+    background-color: #090151e6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .button-group button:hover {
+    background-color: #0a0fadcf;
+  }
+  
+  
+  .dx-datagrid {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dx-datagrid .dx-header-row {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .dx-datagrid .dx-row:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  .dx-datagrid .dx-row:nth-child(even) {
+    background-color: #ffffff;
+  }
+  
+  .dx-datagrid .dx-cell {
+    padding: 10px;
+  }
+  
+  .dx-datagrid .dx-row-focused,
+  .dx-datagrid .dx-selection {
+    background-color: #cce5ff !important; 
+  }
+
+  .dx-popup-content {
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .dx-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+  
+  .dx-button:hover {
+    background-color: #0056b3;
+  }
+  
+  h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  form div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  form label {
+    flex: 1;
+  }
+  
+  form input {
+    flex: 2;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

@@ -1,0 +1,48 @@
+<div class="login-container">
+  <div class="login-box">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="form-group">
+        <i class="fa fa-user icon"></i> 
+        <input
+          type="text"
+          formControlName="userName"
+          placeholder="Username / Email"
+          required
+        />
+        <div
+          *ngIf="submitted && loginForm.controls['userName'].errors"
+          class="error"
+        >
+          <div *ngIf="loginForm.controls['userName'].errors['required']">
+            Username is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <i class="fa fa-lock icon"></i> 
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          required
+        />
+        <div
+          *ngIf="submitted && loginForm.controls['password'].errors"
+          class="error"
+        >
+          <div *ngIf="loginForm.controls['password'].errors['required']">
+            Password is required
+          </div>
+          <div *ngIf="loginForm.controls['password'].errors['minlength']">
+            Password must be at least 6 characters
+          </div>
+        </div>
+      </div>
+      <button type="submit">
+        LOG IN NOW
+        <i class="fa fa-arrow-right"></i> 
+      </button>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </form>
+  </div>
+</div>

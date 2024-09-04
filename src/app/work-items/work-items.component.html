@@ -1,0 +1,95 @@
+<div class="work-items-container">
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>    
+    <h1>Work Items</h1>
+    <dx-data-grid
+        #grid
+        [dataSource]="workItems"
+        keyExpr="id"
+        [showBorders]="true"
+        [focusedRowEnabled]="true"
+        (onRowInserting)="onRowInserting($event)"
+        (onRowRemoving)="onRowRemoving($event)"
+        (onRowUpdating)="onRowUpdating($event)"
+        [editing]="{
+            mode: 'popup',
+            allowUpdating: true,
+            allowAdding: true,
+            allowDeleting: true,
+            useIcons: true
+        }"
+        [selection]="{ mode: 'single' }"
+    >
+        <dxo-paging [enabled]="false"></dxo-paging>
+
+        <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
+            <dxo-popup title="Edit Work Item" [showTitle]="true" [width]="700" [height]="300">
+                <dxi-toolbar-item
+                    toolbar="bottom"
+                    widget="dxButton"
+                    location="after"
+                    [options]="cancelButtonOptions"
+                ></dxi-toolbar-item>
+                <dxi-toolbar-item
+                    toolbar="bottom"
+                    widget="dxButton"
+                    location="after"
+                    [options]="successButtonOptions"
+                ></dxi-toolbar-item>
+            </dxo-popup>
+            <dxo-form>
+                <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                    <dxi-item dataField="designation" caption="Designation">
+                        <dxi-validation-rule
+                            type="required"
+                            message="Designation is required"
+                        ></dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="personInPower" caption="Person in Power">
+                        <dxi-validation-rule
+                            type="required"
+                            message="Person in Power is required"
+                        ></dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="priority" caption="Priority" editorType="dxSelectBox" [editorOptions]="{ items: priorityOptions, displayExpr: 'text', valueExpr: 'value' }">
+                        <dxi-validation-rule
+                            type="required"
+                            message="Priority is required"
+                        ></dxi-validation-rule>
+                    </dxi-item>
+                    <dxi-item dataField="status" caption="Status" editorType="dxSelectBox" [editorOptions]="{ items: statusOptions, displayExpr: 'text', valueExpr: 'value' }">
+                        <dxi-validation-rule
+                            type="required"
+                            message="Status is required"
+                        ></dxi-validation-rule>
+                    </dxi-item>
+                </dxi-item> 
+            </dxo-form>
+        </dxo-editing>
+
+        <dxi-column dataField="designation" caption="Designation"></dxi-column>
+        <dxi-column dataField="personInPower" caption="Person in Power"></dxi-column>
+
+        <dxi-column dataField="priority" caption="Priority" 
+            [calculateCellValue]="getPriorityText">
+        </dxi-column>
+        <dxi-column dataField="status" caption="Status" 
+            [calculateCellValue]="getStatusText">
+        </dxi-column>
+
+        <dxi-column type="buttons" width="100">
+            <dxi-button name="edit" icon="edit" hint="Edit"></dxi-button>
+            <dxi-button name="delete" icon="trash" hint="Delete"></dxi-button>
+        </dxi-column>
+    </dx-data-grid>
+</div>
+
+<dx-toast
+  #toast
+  [message]="toastMessage"
+  [type]="toastType"
+  [displayTime]="1500" 
+  [visible]="isToastVisible"
+  (onHiding)="isToastVisible = false"
+></dx-toast>

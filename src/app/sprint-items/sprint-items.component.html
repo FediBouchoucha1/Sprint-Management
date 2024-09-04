@@ -1,0 +1,88 @@
+<div class="sprint-items-container">
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+  
+  <h1>Sprint Items</h1>
+  <dx-data-grid
+    #grid
+    [dataSource]="sprintItems"
+    [editing]="{
+      mode: 'popup',
+      allowUpdating: true,
+      allowAdding: true,
+      allowDeleting: true,
+      useIcons: true
+    }"
+    [columns]="[
+      { dataField: 'productRequirementName', caption: 'Requirement' },
+      { dataField: 'kind', caption: 'Kind' },
+      { dataField: 'sprintName', caption: 'Sprint' }
+    ]"
+    [showBorders]="true"
+    [selection]="{ mode: 'single' }"
+    [focusedRowEnabled]="true"
+    [focusedRowKey]="focusedRowKey"
+    [keyExpr]="'id'"
+    (onSelectionChanged)="onSelectionChanged($event)"
+    (onRowInserting)="onRowInserting($event)"
+    (onRowRemoving)="onRowRemoving($event)"
+    (onRowUpdating)="onRowUpdating($event)"
+  >
+    <dxo-paging [enabled]="false"></dxo-paging>
+
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="true" [allowDeleting]="true">
+      <dxo-popup title="Edit Sprint Item" [showTitle]="true" [width]="700" [height]="300">
+
+        <dxi-toolbar-item
+          toolbar="bottom"
+          widget="dxButton"
+          location="after"
+          [options]="cancelButtonOptions"
+        ></dxi-toolbar-item>
+
+        <dxi-toolbar-item
+          toolbar="bottom"
+          widget="dxButton"
+          location="after"
+          [options]="successButtonOptions"
+        ></dxi-toolbar-item>
+
+      </dxo-popup>
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+
+          <dxi-item dataField="productRequirementName"  [editorOptions]="requirementEditorOptions" caption="Requirement" [disabled]="true"></dxi-item>
+
+          <dxi-item dataField="kind" caption="Kind"  editorType="dxSelectBox" [editorOptions]="{ items: kindOptions, displayExpr: 'text', valueExpr: 'value' }">
+            <dxi-validation-rule
+              type="required"
+              message="Kind is required"
+            ></dxi-validation-rule>
+          </dxi-item>
+
+          <dxi-item dataField="sprintName"  [editorOptions]="sprintEditorOptions" caption="Sprint" [disabled]="true"></dxi-item>
+
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+
+    <dxi-column dataField="productRequirementName" caption="Requirement"></dxi-column>
+    <dxi-column dataField="kind" caption="Kind" [calculateCellValue]="getKindText"></dxi-column>
+    <dxi-column dataField="sprintName" caption="Sprint"></dxi-column>
+
+    <dxi-column type="buttons" width="100">
+      <dxi-button name="edit" icon="edit" hint="Edit"></dxi-button>
+      <dxi-button name="delete" icon="trash" hint="Delete"></dxi-button>
+    </dxi-column>
+  </dx-data-grid>
+</div>
+<dx-toast
+  #toast
+  [message]="toastMessage"
+  [type]="toastType"
+  [displayTime]="1500" 
+  [visible]="isToastVisible"
+  (onHiding)="isToastVisible = false"
+></dx-toast>

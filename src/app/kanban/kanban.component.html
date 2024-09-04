@@ -1,0 +1,53 @@
+<div class="kanban-board">
+    <div class="kanban-column">
+      <h3>Open</h3>
+      <dx-list
+        [dataSource]="openItems"
+        displayExpr="designation"
+        keyExpr="id">
+        <dxo-item-dragging
+          group="kanbanGroup"
+          [data]="openItems"
+          [allowReordering]="true"
+          [onAdd]="onAdd"
+          [onRemove]="onRemove"
+          [onReorder]="onReorder">
+        </dxo-item-dragging>
+      </dx-list>
+    </div>
+    
+    <div class="kanban-column">
+      <h3>In process</h3>
+      <dx-list
+        [dataSource]="inProcessItems"
+        displayExpr="designation"
+        keyExpr="id">
+        <dxo-item-dragging
+          group="kanbanGroup"
+          [data]="inProcessItems"
+          [allowReordering]="true"
+          [onAdd]="onAdd"
+          [onRemove]="onRemove"
+          [onReorder]="onReorder">
+        </dxo-item-dragging>
+      </dx-list>
+    </div>
+    
+    <div class="kanban-column">
+      <h3>Done</h3>
+      <dx-list
+        [dataSource]="doneItems"
+        displayExpr="designation"
+        keyExpr="id">
+        <dxo-item-dragging
+          group="kanbanGroup"
+          [data]="doneItems"
+          [allowReordering]="true"
+          [onAdd]="onAdd"
+          [onRemove]="onRemove"
+          [onReorder]="onReorder">
+        </dxo-item-dragging>
+      </dx-list>
+    </div>
+  </div>
+  

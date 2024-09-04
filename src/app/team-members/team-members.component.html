@@ -1,0 +1,122 @@
+<div class="team-members-container">
+
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+  
+  <h1>Team Members</h1>
+  <div class="button-group">
+    <button (click)="addNewTeamMember()">Add New Team Member</button>
+  </div>
+
+  <dx-data-grid
+    #grid
+    [dataSource]="teamMembersData"
+    keyExpr="PersonId"
+    [editing]="{
+      mode: 'popup',
+      allowUpdating: true,
+      allowAdding: false,
+      allowDeleting: true,
+      useIcons: true
+    }"
+    [showBorders]="true"
+    [selection]="{ mode: 'single' }"
+    (onRowUpdating)="onRowUpdating($event)"
+    (onRowRemoving)="onRowRemoving($event)"
+  >
+    <dxo-paging [enabled]="false"></dxo-paging>
+
+    <dxo-editing mode="popup" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="true">
+      <dxo-popup title="Edit Team Member" [showTitle]="true" [width]="600" [height]="300">
+        <dxi-toolbar-item
+          toolbar="bottom"
+          widget="dxButton"
+          location="after"
+          [options]="cancelButtonOptions"
+        ></dxi-toolbar-item>
+        <dxi-toolbar-item
+          toolbar="bottom"
+          widget="dxButton"
+          location="after"
+          [options]="successButtonOptions"
+        ></dxi-toolbar-item>
+      </dxo-popup>
+
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+          <dxi-item dataField="firstName" caption="First Name">
+            <dxi-validation-rule type="required" message="First Name is required"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="lastName" caption="Last Name">
+            <dxi-validation-rule type="required" message="Last Name is required"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="email" caption="Email">
+            <dxi-validation-rule type="email" message="Enter a valid email"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="phone" caption="Phone">
+            <dxi-validation-rule
+            type="pattern"
+            pattern="^\+\d{11,19}$"
+            message="Phone number must start with '+' and contain between 12 to 20 digits"
+          ></dxi-validation-rule>          
+          </dxi-item>
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+
+    <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+    <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+    <dxi-column dataField="email" caption="Email"></dxi-column>
+    <dxi-column dataField="phone" caption="Phone"></dxi-column>
+  </dx-data-grid>
+
+  <dx-popup
+    #popup
+    [visible]="false"
+    [width]="600"
+    [height]="500"
+    [showTitle]="true"
+    title="Add Team Members"
+    [dragEnabled]="true"
+    [hideOnOutsideClick]="true"
+    [toolbarItems]="toolbarItems"
+  >
+    <div *dxTemplate="let data of 'content'">
+      <dx-data-grid
+        #popupGrid
+        [dataSource]="potentialTeamMembers"
+        [selection]="{ mode: 'multiple', showCheckBoxesMode: 'always' }"
+        (onSelectionChanged)="selectedPotentialMembers = $event.selectedRowsData"
+      >
+        <dxo-editing mode="cell" [allowUpdating]="false"></dxo-editing>
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <dxo-sorting mode="none"></dxo-sorting>
+        <dxo-filter-row [visible]="false"></dxo-filter-row>
+        <dxo-header-filter [visible]="false"></dxo-header-filter>
+        <dxo-grouping [contextMenuEnabled]="false"></dxo-grouping>
+        <dxo-column-chooser [enabled]="false"></dxo-column-chooser>
+        <dxo-column-fixing [enabled]="false"></dxo-column-fixing>
+        <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+        <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+        <dxi-column dataField="email" caption="Email"></dxi-column>
+        <dxi-column dataField="phone" caption="Phone"></dxi-column>
+      </dx-data-grid>
+
+      <div *dxTemplate="let data of 'footer'">
+        <dx-button text="Cancel" (onClick)="popup.instance.hide()"></dx-button>
+        <dx-button  text="Save" (onClick)="saveSelectedMembers()"></dx-button>
+      </div>
+    </div>
+  </dx-popup>
+
+</div>
+
+<dx-toast
+  #toast
+  [message]="toastMessage"
+  [type]="toastType"
+  [displayTime]="1500" 
+  [visible]="isToastVisible"
+  (onHiding)="isToastVisible = false"
+></dx-toast>
