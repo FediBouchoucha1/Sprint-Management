@@ -4,6 +4,7 @@ import { SprintItemService } from '../services/sprint-items.service';
 import { SprintItem, SprintItemResponse } from '../models/sprint-item.model';
 import { SharedService } from '../shared/shared.service';
 import { LookupService } from '../services/lookup.service';
+import { EditingStartEvent, InitNewRowEvent } from 'devextreme/ui/data_grid';
 
 @Component({
   selector: 'app-sprint-items',
@@ -15,6 +16,7 @@ export class SprintItemsComponent implements OnInit {
 
   sprintItems: SprintItem[] = [];
   currentSprintId: string | null = null;
+  currentSprintItem: SprintItem |null = null;
   focusedRowKey: string | null = null;
 
   toastMessage: string = '';
@@ -22,8 +24,8 @@ export class SprintItemsComponent implements OnInit {
   isToastVisible: boolean = false;
   isLoading: boolean = false;
 
-  requirementEditorOptions = { value: 'Étude du projet', readOnly: true, disabled: true };
-  sprintEditorOptions = { value: '04-30-2024', readOnly: true, disabled: true };
+  requirementEditorOptions = { value: 'Étude du projet', readOnly: true};
+  sprintEditorOptions = { value: '04-30-2024', readOnly: true};
 
   kindOptions: { value: string, text: string }[] = []; 
 
@@ -91,9 +93,11 @@ export class SprintItemsComponent implements OnInit {
 
   setCurrentSprintItem(sprintItem: SprintItem) {
     this.focusedRowKey = sprintItem.id;
+    this.currentSprintItem = sprintItem;
     this.sharedService.setCurrentSprintItemId(sprintItem.id);
     console.log('Current Sprint Item:', sprintItem);
   }
+
 
   getKindText = (rowData: any) => {
     if (!this.kindOptions || !rowData || !rowData.kind) return '';
@@ -143,6 +147,14 @@ export class SprintItemsComponent implements OnInit {
           this.showToast('Cannot Add the sprint Item successfully', 'error');
         });
     }
+  }
+
+  onInitNewRow(event:InitNewRowEvent){
+    event.data = {...event.data, productRequirementName:"Étude du projet",sprintName:"04-30-2024"}
+  }
+
+  onEditingStart(event:EditingStartEvent){
+    this.currentSprintItem = event.data
   }
 
   onRowRemoving(event: any) {
